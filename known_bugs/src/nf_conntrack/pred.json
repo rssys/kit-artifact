@@ -1,0 +1,20 @@
+{
+        "tests": [
+                {
+                        "a": {
+                                "cp_meta": {
+                                        "name": "nf_conntrack_a.c",
+                                        "compiler": "gcc",
+                                        "comp_flags": []
+                                }
+                        },
+                        "v": {
+                                "cp_meta": {
+                                        "name": "nf_conntrack_v.c",
+                                        "compiler": "gcc",
+                                        "comp_flags": []
+                                }
+                        }
+                }
+        ]
+}

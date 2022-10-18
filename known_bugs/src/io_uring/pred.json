@@ -1,0 +1,20 @@
+{
+        "tests": [
+                {
+                        "a": {
+                                "cp_meta": {
+                                        "name": "io_uring_a.c",
+                                        "compiler": "gcc",
+                                        "comp_flags": []
+                                }
+                        },
+                        "v": {
+                                "cp_meta": {
+                                        "name": "io_uring_v.c",
+                                        "compiler": "gcc",
+                                        "comp_flags": []
+                                }
+                        }
+                }
+        ]
+}

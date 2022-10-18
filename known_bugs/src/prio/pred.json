@@ -1,0 +1,20 @@
+{
+        "tests": [
+                {
+                        "a": {
+                                "cp_meta": {
+                                        "name": "prio_a.c",
+                                        "compiler": "gcc",
+                                        "comp_flags": ["-lrt"]
+                                }
+                        },
+                        "v": {
+                                "cp_meta": {
+                                        "name": "prio_v.c",
+                                        "compiler": "gcc",
+                                        "comp_flags": ["-lrt"]
+                                }
+                        }
+                }
+        ]
+}

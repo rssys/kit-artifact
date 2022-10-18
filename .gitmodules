@@ -1,0 +1,4 @@
+[submodule "kit"]
+	path = kit
+	url = git@github.com:rssys/kit.git
+	branch = main

@@ -1,0 +1,20 @@
+{
+	"name": "profile",
+	"workdir": "$KIT_RUN_DIR",
+	"kit": "$MAIN_HOME",
+	"image": "$KIT_BASE_IMAGE",
+	"sshkey": "$KIT_IMAGE_SSHKEY",
+	"disable_syscalls": ["fork"],
+	"type": "qemu",
+	"create_snapshot": true,
+	"prog_dir": "$KIT_PROG_DIR",
+	"profile_dir": "$KIT_PROFILE_TRACE_DIR",
+	"vm": {
+		"count": $VM_COUNT,
+		"cpu": 1,
+		"mem": 2048,
+		"kernel": "$KIT_KERNEL",
+		"comm_type": "virtio",
+		"image_device": "drive format=qcow2,file="
+	}
+}

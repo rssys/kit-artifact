@@ -1,0 +1,23 @@
+{
+        "workdir": "$AE_HOME/known_bugs/workdir",
+        "kit": "$MAIN_HOME",
+        "image": "$AE_HOME/known_bugs/dep/images/stretch.qcow2",
+        "sshkey": "$AE_HOME/known_bugs/dep/images/stretch.id_rsa",
+        "disable_syscalls": ["fork"],
+        "type": "qemu",
+        "create_snapshot": true,
+        "prog_dir": "$AE_HOME/known_bugs/src/nf_conntrack",
+        "pred": "$AE_HOME/known_bugs/src/nf_conntrack/pred.json",
+        "result_dir":"$AE_HOME/known_bugs/src/nf_conntrack/result",
+        "c_prog": true,
+
+        "name": "nf_conntrack",
+        "vm": {
+                "count": 1,
+                "cpu": 1,
+                "mem": 2048,
+                "kernel": "$AE_HOME/known_bugs/dep/kernel/bzImage_nf_conntrack",
+                "comm_type": "virtio",
+                "image_device": "drive format=qcow2,file="
+        }
+}
