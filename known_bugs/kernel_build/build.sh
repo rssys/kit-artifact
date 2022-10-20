@@ -19,7 +19,7 @@ if [ -z "$CONFIG" ]; then
         echo "Require CONFIG."
         exit 1
 fi
-build_args+=" -c /linux-cfg/$CONFIG"
+build_args+=" -f /linux-cfg/$CONFIG"
 if [ ! -z "$PATCH" ]; then
         build_args+=" -p /linux-cfg/$PATCH"
 fi
