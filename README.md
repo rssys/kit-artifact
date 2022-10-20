@@ -6,7 +6,13 @@
 
 **⏰Estimated time: 30 machine minutes + 5 human minutes.**
 
-See [README.md](https://github.com/rssys/kit/blob/main/README.md#getting-started) to build KIT.
+First, run the following command to download the source code:
+
+```
+git clone --recurse-submodules git@github.com:rssys/kit-artifact.git
+```
+
+Then, check the build section in [README.md](https://github.com/rssys/kit#build) to build KIT.
 
 Next, we will setup the testsuite for evaluation. Run the following commands to setup. The script `new_bugs/setup.sh` will build the Linux v5.13 kernel with kernel memory access instrumented, build a Debian stretch image (requires root), and download test programs; the script `known_bugs/setup.sh` will download and decrompress the kernel and VM images required to reproduce known bugs.
 
@@ -74,12 +80,22 @@ This output is the analysis for the test report aggregation results, which in Ta
 
 *🎯This section aims to reproduce the results in Table 2, Table 5 and Table 6.*
 
+*📝Note: The performance of KIT mainly depends on how many VMs are spawned in parallel. The estimated time provided here is based on the observation of one of our past experiments, where we used a machine with about 50 threads and KIT spawned 40 VMs in parallel.*
+
 **Table 2.** To date, there are two upstream patches for the bugs found by KIT. Please check the [patch for bug #1](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=47934e06b65637c88a762d9c98329ae6e3238888) and the [patch for bug #2 & #4](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0b0dff5b3b98c5c7ce848151df9da0b3cdf0cc8b).
 
-Run the script at `new_bugs/test_df_ia.sh`, which will automatically:
+Run the command
+
+```bash
+VM_COUNT=<number_of_vm> new_bugs/test_df_ia.sh
+```
+
+, which will automatically:
 * run kernel memory access profiling on a corpus that consists of ~90000 test programs;
 * generate the test case prediction file based on the kernel data flow trace and cluster test cases using instruction address strategy (DF-IA);
 * execute test cases by keeping iterating over the clusters and pick one test case to execute from each cluster during each visit;
+
+The environment variable `VM_COUNT` is used to specify the number of VMs to spawn. If you do not set this variable, the script will run KIT with `$(nproc)*5/6` VMs spawned by default.
 
 The test case execution will not stop until all test cases are consumed, which would take infinite time finish. **Thus, you need to terminate the testing manually (e.g., type Ctrl-C).** In our experiment, we stopped the test case execution after all clusters were visited once. To reproduce the results, terminate the test case execution when there are about 1.13M test cases executed (Table 4). You can see on the test manager log how many test cases have been executed in the `statTest` field:
 
@@ -132,8 +148,7 @@ Each directory in `known_bugs/src contains the C source code, test configuration
 To reproduce all tests, simply run:
 
 ```bash
-cd known_bugs
-./run.sh
+known_bugs/run.sh
 ```
 
 **Table 3.** The test results are saved in `known_bugs/<bug_name>/result/result-<timestamp>`, which contains the receiver system call results collected when the receiver system call runs with and without the sender program.
@@ -147,14 +162,15 @@ While we already provided the pre-built kernel, you can also try to build the ke
 Run the following command to build the docker image. Feel free to choose the image name.
 
 ```shell
-cd known_bugs/dep/kernel_build/docker && sudo docker build -t <name_of_docker_image> .
+cd known_bugs/kernel_build/docker && sudo docker build -t <name_of_docker_image> .
 ```
 
 Run the following command to build the kernel for reproducing a known bug. Note that `$KERNEL` is the path to a linux source directory that you git cloned, so we can switch to any historic version of the kernel; the first argument to the script is the path to a directory in `known_bugs/kernel_build`; for instance, if you want to build the kernel for bug `ipvs`, then it should be `known_bugs/kernel_build/ipvs`.
 
 ```shell
-cd known_bugs/dep/kernel_build
-DOCKER_IMAGE=<name_of_docker_image> KERNEL=<path_to_linux_src> ./build.sh known_bugs/kernel_build/<bug_name>
+DOCKER_IMAGE=<name_of_docker_image> \
+KERNEL=<path_to_linux_src> \
+known_bugs/kernel_build/build.sh known_bugs/kernel_build/<bug_name>
 ```
 
 After the building is done, the kernel should be at `$KERNEL/arch/x86/boot/bzImage`.
